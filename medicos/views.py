@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.messages import constants
-from .models import Especialidade, DadosMedico, is_medico
+from .models import Especialidade, DadosMedico, DatasAbertas, is_medico
+from datetime import datetime
 
 
 def cadastro(request):
@@ -45,4 +46,31 @@ def cadastro(request):
     dados_medico.save()
 
     messages.add_message(request, constants.SUCCESS, 'Cadastro médico realizado com sucesso')
+    return redirect('/medicos/abrir-horarios/')
+  
+def horarios(request):
+  if not is_medico(request.user):
+    messages.add_message(request, constants.WARNING, 'Somente médicos podem abrir horários')
+    return redirect('/usuarios/logout')
+  
+  if request.method == 'GET':
+    dados_medico = DadosMedico.objects.get(user=request.user)
+    data_abertas = DatasAbertas.objects.filter(user=request.user)
+    
+    return render(request, 'abrir_horarios.html', {'dados_medico': dados_medico, 'data_abertas': data_abertas, 'is_medico': is_medico(request.user)})
+  elif request.method == 'POST':
+    data = request.POST.get('data')
+    data_formatada = datetime.strptime(data, '%Y-%m-%dT%H:%M')
+
+    if data_formatada <= datetime.now():
+      messages.add_message(request, constants.WARNING, 'A data deve ser maior ou igual a data atual')
+      return redirect('/medicos/abrir-horarios/')
+    
+    data_aberta = DatasAbertas(
+      data=data_formatada,
+      user=request.user
+    )
+    data_aberta.save()
+
+    messages.add_message(request, constants.SUCCESS, 'Horário cadastrado com sucesso')
     return redirect('/medicos/abrir-horarios/')
