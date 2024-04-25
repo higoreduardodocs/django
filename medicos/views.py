@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.messages import constants
 from .models import Especialidade, DadosMedico, DatasAbertas, is_medico
-from datetime import datetime
+from datetime import datetime, timedelta
+from pacientes.models import Consulta
 
 
 def cadastro(request):
@@ -74,3 +75,16 @@ def horarios(request):
 
     messages.add_message(request, constants.SUCCESS, 'Horário cadastrado com sucesso')
     return redirect('/medicos/abrir-horarios/')
+  
+def consultas_medico(request):
+  if not is_medico(request.user):
+    messages.add_message(request, constants.WARNING, 'Somente médicos podem acessar essa página')
+    return redirect('/usuarios/logout')
+  
+  hoje = datetime.now().date()
+  amanha = hoje + timedelta(days=1)
+
+  consultas_hoje = Consulta.objects.filter(data_agendada__user=request.user).filter(data_agendada__data__gte=hoje).filter(data_agendada__data__lt=amanha)
+  consultas_restantes = Consulta.objects.filter(data_agendada__user=request.user).exclude(id__in=consultas_hoje.values('id'))
+
+  return render(request, 'consultas_medico.html', {'consultas_hoje': consultas_hoje, 'consultas_restantes': consultas_restantes, 'is_medico': is_medico(request.user)})
