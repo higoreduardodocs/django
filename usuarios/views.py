@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.contrib import auth
 
 
 def cadastro(request):
@@ -47,3 +48,21 @@ def cadastro(request):
 def login(request):
   if request.method == 'GET':
     return render(request, 'login.html')
+  elif request.method == 'POST':
+    username = request.POST.get('username')
+    senha = request.POST.get('senha')
+
+    user = auth.authenticate(request, username=username, password=senha)
+
+    if user:
+      auth.login(request, user)
+      return redirect('/pacientes/home/')
+    
+    messages.add_message(request, constants.ERROR, 'Usuário ou senha incorretos')
+    return redirect('/usuarios/login/')
+
+def logout(request):
+  if request.user:
+    auth.logout(request)
+
+  return redirect('/usuarios/login/')
