@@ -1,7 +1,9 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %}
 
 {% block 'head' %}
+<link rel="stylesheet" href="{% static 'medicos/css/abrir_horario.css' %}" />
+<link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}" />
+<link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}" />
 <link rel="stylesheet" href="{% static 'pacientes/css/home.css' %}" />
 <link
   rel="stylesheet"
@@ -10,8 +12,7 @@
 {% endblock 'head' %}
 
 {% block 'body' %}
-{% include 'partials/navbar.html' %}
-
+{%include 'partials/navbar.html' %}
 <br /><br />
 <div class="container">
   <div class="row">
@@ -55,7 +56,9 @@
           <div class="row">
             <div class="col-md-3">
               {% if medico.foto %}
-                <img src="{{medico.foto.url}}" class="foto-perfil-card" alt="" />
+              <img src="{{medico.foto.url}}" class="foto-perfil-card" alt="" />
+              {% else %}
+              <span>Sem foto</span>
               {% endif %}
             </div>
             <div class="col-md">
