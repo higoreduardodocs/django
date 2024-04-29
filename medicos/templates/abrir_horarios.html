@@ -15,7 +15,9 @@
 
   <div class="row">
     <div class="col-md-8">
-      <img src="{{dados_medico.foto.url}}" class="foto-perfil" alt="" />
+      {% if dados_medico.foto %}
+        <img src="{{dados_medico.foto.url}}" class="foto-perfil" alt="" />
+      {% endif %}
       <label style="margin-left: 30px; font-size: 25px" class="p-bold"
         >Olá, <span class="color-dark">{{request.user.username}}</span></label
       >
