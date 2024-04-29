@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %}
 
 {% block 'head' %}
 <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}" />
@@ -8,7 +7,6 @@
 
 {% block 'body' %}
 {%include 'partials/navbar.html' %}
-
 <div class="container">
   <br />
   <br />
@@ -19,11 +17,10 @@
       </p>
       <p class="p-bold">Vamos realizar seu cadastro médico legal.</p>
       {% if messages %}
-        <br />
-        {% for message in messages %}
-        <section class="alert {{message.tags}}">{{message}}</section>
-        {% endfor %}
-      {% endif %}
+      <br />
+      {% for message in messages %}
+      <section class="alert {{message.tags}}">{{message}}</section>
+      {% endfor %} {% endif %}
       <br />
       <form
         action="{% url 'cadastro-medico' %}"
@@ -33,7 +30,7 @@
         {% csrf_token %}
         <div class="row">
           <div class="col-md">
-            <label>CRM:</label>
+            <label for="">CRM:</label>
             <input
               type="text"
               class="form-control shadow-main-color"
@@ -42,10 +39,11 @@
             />
           </div>
           <div class="col-md">
-            <label>Cédula de identidade médica:</label>
+            <label for="">Cédula de identidade médica:</label>
             <input
               type="file"
               name="cim"
+              id=""
               class="form-control shadow-main-color"
             />
           </div>
@@ -53,7 +51,7 @@
         <br />
         <div class="row">
           <div class="col-md">
-            <label>Nome completo:</label>
+            <label for="">Nome completo:</label>
             <input
               type="text"
               class="form-control shadow-main-color"
@@ -62,26 +60,28 @@
             />
           </div>
           <div class="col-md">
-            <label>CEP</label>
+            <label for="">CEP</label>
             <input
               type="text"
               name="cep"
+              id=""
               class="form-control shadow-main-color"
             />
           </div>
         </div>
         <br />
-        <label>Rua</label>
+        <label for="">Rua</label>
         <input
           type="text"
           name="rua"
+          id=""
           class="form-control shadow-main-color"
           placeholder="Endereço ..."
         />
         <br />
         <div class="row">
           <div class="col-md">
-            <label>Bairro:</label>
+            <label for="">Bairro:</label>
             <input
               type="text"
               class="form-control shadow-main-color"
@@ -90,31 +90,34 @@
             />
           </div>
           <div class="col-md">
-            <label>Número:</label>
+            <label for="">Número:</label>
             <input
               type="number"
               name="numero"
+              id=""
               class="form-control shadow-main-color"
             />
           </div>
         </div>
         <br />
-        <label>RG:</label>
+        <label for="">RG:</label>
         <input
           type="file"
           name="rg"
+          id=""
           class="form-control shadow-main-color"
         />
         <br />
-        <label>Foto de perfil:</label>
+        <label for="">Foto de perfil:</label>
         <input
           type="file"
           name="foto"
+          id=""
           class="form-control shadow-main-color"
         />
         <br />
-        <label>Especialidade médica</label>
-        <select name="especialidade" class="form-select">
+        <label for="">Especialidade médica</label>
+        <select name="especialidade" class="form-select" id="">
           {% for especialidade in especialidades %}
           <option value="{{especialidade.id}}">
             {{especialidade.especialidade}}
@@ -123,13 +126,13 @@
           <!-- <option value="">X</option> -->
         </select>
         <br />
-        <label>Descrição:</label>
+        <label for="">Descrição:</label>
         <textarea
           name="descricao"
           class="form-control shadow-main-color"
         ></textarea>
         <br />
-        <label>Valor consulta:</label>
+        <label for="">Valor consulta:</label>
         <input
           type="number"
           name="valor_consulta"
